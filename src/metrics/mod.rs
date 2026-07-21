@@ -21,6 +21,23 @@ pub use events::{
 pub use pos_encoded::PosEncoded;
 pub use types::{EventValues, METRICS_API_VERSION, MetricEvent, MetricsBatch};
 
+pub(crate) fn should_deliver_metric_event(
+    config: &crate::config::Config,
+    event: &MetricEvent,
+) -> bool {
+    if event.event_id != types::MetricEventId::SessionEvent as u16
+        || !config.has_repository_filters()
+    {
+        return true;
+    }
+
+    let repo_url = event
+        .attrs
+        .get(&attrs::attr_pos::REPO_URL.to_string())
+        .and_then(serde_json::Value::as_str);
+    config.is_allowed_repository_url(repo_url)
+}
+
 /// Record an event with values and attributes.
 ///
 /// Events are sent to the daemon telemetry worker which batches

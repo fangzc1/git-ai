@@ -314,6 +314,10 @@ pub struct ConfigPatch {
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub exclude_prompts_in_repositories: Option<Vec<String>>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub allow_repositories: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
+    pub exclude_repositories: Option<Vec<String>>,
+    #[serde(default, skip_serializing_if = "Option::is_none")]
     pub telemetry_oss_disabled: Option<bool>,
     #[serde(default, skip_serializing_if = "Option::is_none")]
     pub disable_version_checks: Option<bool>,
@@ -432,31 +436,47 @@ impl Config {
             return true;
         }
 
-        // First check if repository is in exclusion list - exclusions take precedence
-        if !self.exclude_repositories.is_empty()
-            && let Some(remotes) = remotes
-        {
-            // If any remote matches the exclusion patterns, deny access
-            if remotes
-                .iter()
-                .any(|remote| remote_matches_patterns(&self.exclude_repositories, &remote.1))
-            {
-                return false;
-            }
-        }
+        let matches_exclusion = remotes.is_some_and(|remotes| {
+            remotes.iter().any(|(_, remote_url)| {
+                remote_matches_patterns(&self.exclude_repositories, remote_url)
+            })
+        });
+        let matches_allowlist = remotes.is_some_and(|remotes| {
+            remotes.iter().any(|(_, remote_url)| {
+                remote_matches_patterns(&self.allow_repositories, remote_url)
+            })
+        });
 
-        // If allowlist is empty, allow everything (unless excluded above)
-        if self.allow_repositories.is_empty() {
+        self.is_allowed_repository_match(matches_exclusion, matches_allowlist)
+    }
+
+    /// Apply repository allow/exclude filters to an already-resolved remote URL.
+    ///
+    /// This avoids reopening the repository when a persisted event already carries
+    /// its normalized repository URL.
+    pub(crate) fn is_allowed_repository_url(&self, repository_url: Option<&str>) -> bool {
+        if repository_url.is_some_and(crate::diagnostic_sentinels::is_debug_self_check_remote_url) {
             return true;
         }
 
-        // If allowlist is defined, only allow repos whose remotes match the patterns
-        match remotes {
-            Some(remotes) => remotes
-                .iter()
-                .any(|remote| remote_matches_patterns(&self.allow_repositories, &remote.1)),
-            None => false, // Can't verify, deny by default when allowlist is active
+        let matches_exclusion = repository_url
+            .is_some_and(|url| remote_matches_patterns(&self.exclude_repositories, url));
+        let matches_allowlist = repository_url
+            .is_some_and(|url| remote_matches_patterns(&self.allow_repositories, url));
+
+        self.is_allowed_repository_match(matches_exclusion, matches_allowlist)
+    }
+
+    fn is_allowed_repository_match(
+        &self,
+        matches_exclusion: bool,
+        matches_allowlist: bool,
+    ) -> bool {
+        if matches_exclusion {
+            return false;
         }
+
+        self.allow_repositories.is_empty() || matches_allowlist
     }
 
     /// Returns true if prompts should be excluded (not shared) for the given repository.
@@ -1664,6 +1684,18 @@ fn apply_test_config_patch(config: &mut Config) {
                     })
                     .collect();
         }
+        if let Some(patterns) = patch.allow_repositories {
+            config.allow_repositories = patterns
+                .into_iter()
+                .filter_map(|pattern_str| Pattern::new(&pattern_str).ok())
+                .collect();
+        }
+        if let Some(patterns) = patch.exclude_repositories {
+            config.exclude_repositories = patterns
+                .into_iter()
+                .filter_map(|pattern_str| Pattern::new(&pattern_str).ok())
+                .collect();
+        }
         if let Some(telemetry_oss_disabled) = patch.telemetry_oss_disabled {
             config.telemetry_oss_disabled = telemetry_oss_disabled;
         }
@@ -2484,6 +2516,28 @@ mod tests {
             ),
         ];
         assert!(!config.is_allowed_repository_with_remotes(Some(&remotes)));
+    }
+
+    #[test]
+    fn test_repository_url_filter_uses_allow_and_exclude_precedence() {
+        let config = create_test_config(
+            vec!["https://github.com/acme/*".to_string()],
+            vec!["git@github.com:acme/private".to_string()],
+        );
+
+        assert!(config.is_allowed_repository_url(Some("https://github.com/acme/public")));
+        assert!(!config.is_allowed_repository_url(Some("https://github.com/acme/private")));
+        assert!(!config.is_allowed_repository_url(Some("https://github.com/other/repo")));
+    }
+
+    #[test]
+    fn test_repository_url_filter_matches_existing_unknown_repository_semantics() {
+        let exclude_only =
+            create_test_config(vec![], vec!["https://github.com/acme/private".to_string()]);
+        assert!(exclude_only.is_allowed_repository_url(None));
+
+        let allowlist = create_test_config(vec!["https://github.com/acme/*".to_string()], vec![]);
+        assert!(!allowlist.is_allowed_repository_url(None));
     }
 
     #[test]

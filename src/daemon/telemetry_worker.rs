@@ -736,18 +736,28 @@ struct PendingMetricsFlushResult {
     invalid_records: usize,
 }
 
+#[derive(Clone, Copy)]
+struct PendingMetricsFlushOptions {
+    deadline: std::time::Instant,
+    max_batch_size: usize,
+}
+
 fn flush_pending_metrics_from_db(
     client: &ApiClient,
     deadline: std::time::Instant,
 ) -> Result<PendingMetricsFlushResult, GitAiError> {
+    let config = Config::fresh();
     flush_pending_metric_records_with(
         read_pending_metrics_batch,
         mark_metric_records_delivered,
         mark_metric_records_failed,
         mark_metric_records_undeliverable,
+        |event| crate::metrics::should_deliver_metric_event(&config, event),
         |batch| client.upload_metrics(batch),
-        deadline,
-        MAX_METRICS_PER_ENVELOPE,
+        PendingMetricsFlushOptions {
+            deadline,
+            max_batch_size: MAX_METRICS_PER_ENVELOPE,
+        },
     )
 }
 
@@ -789,27 +799,29 @@ fn flush_pending_metric_records_with<
     MarkDelivered,
     MarkFailed,
     MarkUndeliverable,
+    ShouldDeliver,
     UploadBatch,
 >(
     mut dequeue_batch: DequeueBatch,
     mut mark_delivered: MarkDelivered,
     mut mark_failed: MarkFailed,
     mut mark_undeliverable: MarkUndeliverable,
+    mut should_deliver: ShouldDeliver,
     mut upload_batch: UploadBatch,
-    deadline: std::time::Instant,
-    max_batch_size: usize,
+    options: PendingMetricsFlushOptions,
 ) -> Result<PendingMetricsFlushResult, GitAiError>
 where
     DequeueBatch: FnMut(usize) -> Result<Vec<MetricRecord>, GitAiError>,
     MarkDelivered: FnMut(&[i64]) -> Result<(), GitAiError>,
     MarkFailed: FnMut(&[i64], &GitAiError) -> Result<(), GitAiError>,
     MarkUndeliverable: FnMut(&[(i64, String)]) -> Result<(), GitAiError>,
+    ShouldDeliver: FnMut(&MetricEvent) -> bool,
     UploadBatch: FnMut(&MetricsBatch) -> Result<MetricsUploadResponse, GitAiError>,
 {
     let mut result = PendingMetricsFlushResult::default();
 
-    while std::time::Instant::now() < deadline {
-        let batch = dequeue_batch(max_batch_size)?;
+    while std::time::Instant::now() < options.deadline {
+        let batch = dequeue_batch(options.max_batch_size)?;
         if batch.is_empty() {
             break;
         }
@@ -817,25 +829,40 @@ where
         let mut events = Vec::new();
         let mut record_ids = Vec::new();
         let mut invalid_ids = Vec::new();
+        let mut skipped_ids = Vec::new();
 
         for record in &batch {
             match serde_json::from_str::<MetricEvent>(&record.event_json) {
-                Ok(event) => {
+                Ok(event) if should_deliver(&event) => {
                     events.push(event);
                     record_ids.push(record.id);
                 }
+                Ok(_) => skipped_ids.push(record.id),
                 Err(_) => {
                     invalid_ids.push(record.id);
                 }
             }
         }
 
-        let batch_min_id = record_ids.iter().chain(invalid_ids.iter()).min().copied();
-        let batch_max_id = record_ids.iter().chain(invalid_ids.iter()).max().copied();
+        let all_ids = record_ids
+            .iter()
+            .chain(invalid_ids.iter())
+            .chain(skipped_ids.iter());
+        let batch_min_id = all_ids.clone().min().copied();
+        let batch_max_id = all_ids.max().copied();
 
         if !invalid_ids.is_empty() {
             result.invalid_records += invalid_ids.len();
             mark_delivered(&invalid_ids)?;
+        }
+        if !skipped_ids.is_empty() {
+            tracing::info!(
+                min_id = ?batch_min_id,
+                max_id = ?batch_max_id,
+                skipped_events = skipped_ids.len(),
+                "metrics delivery skipped repository-filtered session events"
+            );
+            mark_delivered(&skipped_ids)?;
         }
 
         if events.is_empty() {
@@ -848,6 +875,7 @@ where
             max_id = ?batch_max_id,
             events = record_ids.len(),
             invalid_records = invalid_ids.len(),
+            skipped_events = skipped_ids.len(),
             "metrics upload batch sending"
         );
         let response = match upload_batch(&metrics_batch) {
@@ -1583,6 +1611,13 @@ mod tests {
         unix_now().min(u32::MAX as u64) as u32
     }
 
+    fn pending_flush_options(max_batch_size: usize) -> PendingMetricsFlushOptions {
+        PendingMetricsFlushOptions {
+            deadline: std::time::Instant::now() + std::time::Duration::from_secs(60),
+            max_batch_size,
+        }
+    }
+
     fn test_message_envelope(message: &str) -> TelemetryEnvelope {
         TelemetryEnvelope::Message {
             timestamp: chrono::Utc::now().to_rfc3339(),
@@ -1665,6 +1700,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             {
                 let uploaded = Rc::clone(&uploaded);
                 move |batch| {
@@ -1674,8 +1710,7 @@ mod tests {
                     Ok(MetricsUploadResponse { errors: vec![] })
                 }
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            1,
+            pending_flush_options(1),
         )
         .unwrap();
 
@@ -1688,6 +1723,62 @@ mod tests {
             }
         );
         assert_eq!(*uploaded.borrow(), vec![vec![ts2], vec![ts1]]);
+        assert_eq!(db.borrow().count().unwrap(), 0);
+        assert_eq!(
+            db.borrow().get_metric_history(0, None, &[1]).unwrap().len(),
+            2
+        );
+    }
+
+    #[test]
+    fn flush_pending_metric_records_marks_skipped_rows_delivered_and_keeps_draining() {
+        let (metrics_db, _metrics_db_dir) = MetricsDatabase::new_temp_for_tests().unwrap();
+        let db = Rc::new(RefCell::new(metrics_db));
+        let uploaded_ts = now_ts().saturating_sub(1);
+        let skipped_ts = now_ts();
+        db.borrow_mut()
+            .insert_events(&[event_json(uploaded_ts), event_json(skipped_ts)])
+            .unwrap();
+
+        let uploaded = Rc::new(RefCell::new(Vec::<u32>::new()));
+        flush_pending_metric_records_with(
+            {
+                let db = Rc::clone(&db);
+                move |limit| db.borrow_mut().dequeue_pending_batch(limit)
+            },
+            {
+                let db = Rc::clone(&db);
+                move |ids| db.borrow_mut().mark_records_delivered(ids, unix_now())
+            },
+            {
+                let db = Rc::clone(&db);
+                move |ids, err| {
+                    db.borrow_mut()
+                        .mark_records_failed(ids, &err.to_string(), unix_now())
+                }
+            },
+            {
+                let db = Rc::clone(&db);
+                move |records| {
+                    db.borrow_mut()
+                        .mark_records_undeliverable(records, unix_now())
+                }
+            },
+            move |event| event.timestamp != skipped_ts,
+            {
+                let uploaded = Rc::clone(&uploaded);
+                move |batch| {
+                    uploaded
+                        .borrow_mut()
+                        .extend(batch.events.iter().map(|event| event.timestamp));
+                    Ok(MetricsUploadResponse { errors: vec![] })
+                }
+            },
+            pending_flush_options(1),
+        )
+        .unwrap();
+
+        assert_eq!(*uploaded.borrow(), vec![uploaded_ts]);
         assert_eq!(db.borrow().count().unwrap(), 0);
         assert_eq!(
             db.borrow().get_metric_history(0, None, &[1]).unwrap().len(),
@@ -1729,6 +1820,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             {
                 let uploaded = Rc::clone(&uploaded);
                 move |batch| {
@@ -1738,8 +1830,7 @@ mod tests {
                     Ok(MetricsUploadResponse { errors: vec![] })
                 }
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            10,
+            pending_flush_options(10),
         )
         .unwrap();
 
@@ -1795,6 +1886,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             {
                 let uploaded = Rc::clone(&uploaded);
                 move |batch| {
@@ -1809,8 +1901,7 @@ mod tests {
                     })
                 }
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            10,
+            pending_flush_options(10),
         )
         .unwrap();
 
@@ -1871,6 +1962,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             |_batch| {
                 Ok(MetricsUploadResponse {
                     errors: vec![
@@ -1885,8 +1977,7 @@ mod tests {
                     ],
                 })
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            10,
+            pending_flush_options(10),
         )
         .unwrap();
 
@@ -1944,6 +2035,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             |_batch| {
                 Ok(MetricsUploadResponse {
                     errors: vec![MetricsUploadError {
@@ -1952,8 +2044,7 @@ mod tests {
                     }],
                 })
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            10,
+            pending_flush_options(10),
         );
 
         assert!(result.is_err());
@@ -1996,9 +2087,9 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             |_batch| Err(GitAiError::Generic("upload failed".to_string())),
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            10,
+            pending_flush_options(10),
         );
 
         assert!(result.is_err());
@@ -2039,9 +2130,9 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             |_batch| Err(GitAiError::Generic("upload failed".to_string())),
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            1,
+            pending_flush_options(1),
         );
         assert!(failed.is_err());
         assert_eq!(db.borrow().count_retryable().unwrap(), 0);
@@ -2077,6 +2168,7 @@ mod tests {
                         .mark_records_undeliverable(records, unix_now())
                 }
             },
+            |_| true,
             {
                 let uploaded = Rc::clone(&uploaded);
                 move |batch| {
@@ -2086,8 +2178,7 @@ mod tests {
                     Ok(MetricsUploadResponse { errors: vec![] })
                 }
             },
-            std::time::Instant::now() + std::time::Duration::from_secs(60),
-            1,
+            pending_flush_options(1),
         )
         .unwrap();
 

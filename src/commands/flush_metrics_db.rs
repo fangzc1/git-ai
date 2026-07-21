@@ -3,8 +3,9 @@
 //! Uploads pending metrics database rows to the API.
 
 use crate::api::{ApiClient, ApiContext, metrics_upload_allowed, upload_metrics_with_retry};
+use crate::config::Config;
 use crate::metrics::db::MetricsDatabase;
-use crate::metrics::{MetricEvent, MetricsBatch};
+use crate::metrics::{MetricEvent, MetricsBatch, should_deliver_metric_event};
 
 /// Max events per batch upload
 const MAX_BATCH_SIZE: usize = 1000;
@@ -33,6 +34,8 @@ pub fn handle_flush_metrics_db(_args: &[String]) {
     let mut total_batches = 0usize;
     let mut total_invalid = 0usize;
     let mut total_undeliverable = 0usize;
+    let mut total_skipped = 0usize;
+    let config = Config::fresh();
 
     loop {
         // Get batch from DB
@@ -61,18 +64,30 @@ pub fn handle_flush_metrics_db(_args: &[String]) {
         // Parse events and build MetricsBatch
         let mut events = Vec::new();
         let mut record_ids = Vec::new();
+        let mut skipped_ids = Vec::new();
 
         for record in &batch {
-            if let Ok(event) = serde_json::from_str::<MetricEvent>(&record.event_json) {
-                events.push(event);
-                record_ids.push(record.id);
-            } else {
-                total_invalid += 1;
-                // Invalid JSON cannot upload successfully. Mark it delivered so
-                // future flushes can continue past the malformed historical row.
-                if let Ok(mut db_lock) = db.lock() {
-                    let _ = db_lock.mark_records_delivered(&[record.id], current_unix_ts());
+            match serde_json::from_str::<MetricEvent>(&record.event_json) {
+                Ok(event) if should_deliver_metric_event(&config, &event) => {
+                    events.push(event);
+                    record_ids.push(record.id);
                 }
+                Ok(_) => skipped_ids.push(record.id),
+                Err(_) => {
+                    total_invalid += 1;
+                    // Invalid JSON cannot upload successfully. Mark it delivered so
+                    // future flushes can continue past the malformed historical row.
+                    if let Ok(mut db_lock) = db.lock() {
+                        let _ = db_lock.mark_records_delivered(&[record.id], current_unix_ts());
+                    }
+                }
+            }
+        }
+
+        if !skipped_ids.is_empty() {
+            total_skipped += skipped_ids.len();
+            if let Ok(mut db_lock) = db.lock() {
+                let _ = db_lock.mark_records_delivered(&skipped_ids, current_unix_ts());
             }
         }
 
@@ -157,6 +172,12 @@ pub fn handle_flush_metrics_db(_args: &[String]) {
         eprintln!(
             "flush-metrics-db: marked {} server-rejected record(s) undeliverable",
             total_undeliverable
+        );
+    }
+    if total_skipped > 0 {
+        eprintln!(
+            "flush-metrics-db: marked {} repository-filtered session event(s) delivered without upload",
+            total_skipped
         );
     }
 

@@ -1204,6 +1204,30 @@ impl TestRepo {
                 serde_json::Value::Array(values),
             );
         }
+        if let Some(allow) = &patch.allow_repositories {
+            config.insert(
+                "allow_repositories".to_string(),
+                serde_json::Value::Array(
+                    allow
+                        .iter()
+                        .cloned()
+                        .map(serde_json::Value::String)
+                        .collect(),
+                ),
+            );
+        }
+        if let Some(exclude) = &patch.exclude_repositories {
+            config.insert(
+                "exclude_repositories".to_string(),
+                serde_json::Value::Array(
+                    exclude
+                        .iter()
+                        .cloned()
+                        .map(serde_json::Value::String)
+                        .collect(),
+                ),
+            );
+        }
         if let Some(telemetry_oss_disabled) = patch.telemetry_oss_disabled {
             let value = if telemetry_oss_disabled { "off" } else { "on" };
             config.insert(
