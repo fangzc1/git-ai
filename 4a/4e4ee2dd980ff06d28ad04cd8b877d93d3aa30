@@ -1,0 +1,23 @@
+README.md
+  s_2f122ce3b649e0::t_991494e39a1b9a 95-99
+src/commands/config.rs
+  s_2f122ce3b649e0::t_503ebaad5d4831 1001-1008,1010-1023,1025,1029,1033-1035
+tests/integration/config_cli_coverage.rs
+  s_2f122ce3b649e0::t_ca7bb3db5b859c 266-357
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.6.16",
+  "base_commit_sha": "4a4e4ee2dd980ff06d28ad04cd8b877d93d3aa30",
+  "prompts": {},
+  "sessions": {
+    "s_2f122ce3b649e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f8e13-022c-7f12-823c-09a56c5a12b9",
+        "model": "unknown"
+      },
+      "human_author": "fangzc1 <fangzc1@lenovo.com>"
+    }
+  }
+}
