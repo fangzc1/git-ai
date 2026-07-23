@@ -1,0 +1,21 @@
+src/streams/agents/amp.rs
+  s_2f122ce3b649e0::t_fe843c6382a348 10,74,76-102,104,108,145,148,291-327
+src/mdm/profile_roots.rs
+  s_2f122ce3b649e0::t_1192434ff95847 50
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.6.16",
+  "base_commit_sha": "f22a8fcdbe24a21a11249fccb5d2526f2b3a4867",
+  "prompts": {},
+  "sessions": {
+    "s_2f122ce3b649e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f8e13-022c-7f12-823c-09a56c5a12b9",
+        "model": "unknown"
+      },
+      "human_author": "fangzc1 <fangzc1@lenovo.com>"
+    }
+  }
+}
