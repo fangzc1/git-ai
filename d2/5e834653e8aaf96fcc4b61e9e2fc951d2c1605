@@ -1,0 +1,347 @@
+src/streams/agents/amp.rs
+  s_2f122ce3b649e0::t_fe843c6382a348 10,74,76-102,104,108,145,148,291-327
+src/mdm/profile_roots.rs
+  s_2f122ce3b649e0::t_1192434ff95847 50
+.agents/skills/trellis-before-dev/SKILL.md
+  s_35867bc40571eb::t_85812821c4a06a 1-40
+.agents/skills/trellis-brainstorm/SKILL.md
+  s_35867bc40571eb::t_cf54fb88153fc7 1-173
+.agents/skills/trellis-break-loop/SKILL.md
+  s_35867bc40571eb::t_524e056016142b 1-188
+.agents/skills/trellis-channel/SKILL.md
+  s_35867bc40571eb::t_98bea66ef4e22f 1-67
+.agents/skills/trellis-channel/references/command-reference.md
+  s_35867bc40571eb::t_97e30b7a2d059b 1-480
+.agents/skills/trellis-channel/references/forum.md
+  s_35867bc40571eb::t_a1683318d509c4 1-233
+.agents/skills/trellis-channel/references/progress-debugging.md
+  s_35867bc40571eb::t_ef5e2dafacd9d7 1-226
+.agents/skills/trellis-channel/references/workers.md
+  s_35867bc40571eb::t_359437513a5ab9 1-276
+.agents/skills/trellis-channel/references/workflows.md
+  s_35867bc40571eb::t_af5da5e7895726 1-128
+.agents/skills/trellis-check/SKILL.md
+  s_35867bc40571eb::t_ab965e597e4dc9 1-98
+.agents/skills/trellis-continue/SKILL.md
+  s_35867bc40571eb::t_a480c668d149a1 1-61
+.agents/skills/trellis-finish-work/SKILL.md
+  s_35867bc40571eb::t_6311183c376eb1 1-71
+.agents/skills/trellis-meta/SKILL.md
+  s_35867bc40571eb::t_d169bd44914b5c 1-85
+.agents/skills/trellis-meta/references/customize-local/add-project-local-conventions.md
+  s_35867bc40571eb::t_670465b1fc9f6f 1-83
+.agents/skills/trellis-meta/references/customize-local/change-agents.md
+  s_35867bc40571eb::t_9a6c0cb0e40f13 1-56
+.agents/skills/trellis-meta/references/customize-local/change-context-loading.md
+  s_35867bc40571eb::t_d78624a2285bbf 1-84
+.agents/skills/trellis-meta/references/customize-local/change-hooks.md
+  s_35867bc40571eb::t_acded85dc56dfa 1-57
+.agents/skills/trellis-meta/references/customize-local/change-skills-or-commands.md
+  s_35867bc40571eb::t_9eb03606314300 1-123
+.agents/skills/trellis-meta/references/customize-local/change-spec-structure.md
+  s_35867bc40571eb::t_a4502c98882bcf 1-83
+.agents/skills/trellis-meta/references/customize-local/change-task-lifecycle.md
+  s_35867bc40571eb::t_04386dfa1a14ca 1-90
+.agents/skills/trellis-meta/references/customize-local/change-workflow.md
+  s_35867bc40571eb::t_6ffc380bc55144 1-65
+.agents/skills/trellis-meta/references/customize-local/overview.md
+  s_35867bc40571eb::t_e02d5b7fa02af1 1-55
+.agents/skills/trellis-meta/references/local-architecture/bundled-skills.md
+  s_35867bc40571eb::t_7a22d3d14bbed0 1-147
+.agents/skills/trellis-meta/references/local-architecture/context-injection.md
+  s_35867bc40571eb::t_8ae5d12c67fb29 1-68
+.agents/skills/trellis-meta/references/local-architecture/generated-files.md
+  s_35867bc40571eb::t_522990ae2de049 1-80
+.agents/skills/trellis-meta/references/local-architecture/multi-agent-channel.md
+  s_35867bc40571eb::t_bf5e2f027eb981 1-69
+.agents/skills/trellis-meta/references/local-architecture/overview.md
+  s_35867bc40571eb::t_89e98d1b356d18 1-51
+.agents/skills/trellis-meta/references/local-architecture/spec-system.md
+  s_35867bc40571eb::t_e546b3ed76e492 1-102
+.agents/skills/trellis-meta/references/local-architecture/task-system.md
+  s_35867bc40571eb::t_bb687077be8a7c 1-130
+.agents/skills/trellis-meta/references/local-architecture/workflow.md
+  s_35867bc40571eb::t_89a700c2f38bc1 1-75
+.agents/skills/trellis-meta/references/local-architecture/workspace-memory.md
+  s_35867bc40571eb::t_9750e8057a53e9 1-71
+.agents/skills/trellis-meta/references/platform-files/agents.md
+  s_35867bc40571eb::t_338ba32fc2c66b 1-82
+.agents/skills/trellis-meta/references/platform-files/hooks-and-settings.md
+  s_35867bc40571eb::t_6b79171455c508 1-72
+.agents/skills/trellis-meta/references/platform-files/overview.md
+  s_35867bc40571eb::t_48e4f72da71686 1-59
+.agents/skills/trellis-meta/references/platform-files/platform-map.md
+  s_35867bc40571eb::t_11cb651b854788 1-105
+.agents/skills/trellis-meta/references/platform-files/skills-and-commands.md
+  s_35867bc40571eb::t_6cbdd25da3f5a6 1-85
+.agents/skills/trellis-session-insight/SKILL.md
+  s_35867bc40571eb::t_27e1ea0278a2bc 1-81
+.agents/skills/trellis-session-insight/references/cli-quick-reference.md
+  s_35867bc40571eb::t_e1cb3033c5fc42 1-65
+.agents/skills/trellis-session-insight/references/triggering-patterns.md
+  s_35867bc40571eb::t_f3c5ed927f1fb0 1-93
+.agents/skills/trellis-spec-bootstrap/SKILL.md
+  s_35867bc40571eb::t_22d67153470be7 1-41
+.agents/skills/trellis-spec-bootstrap/references/mcp-setup.md
+  s_35867bc40571eb::t_21074beceae3c4 1-90
+.agents/skills/trellis-spec-bootstrap/references/repository-analysis.md
+  s_35867bc40571eb::t_007b03364c3009 1-59
+.agents/skills/trellis-spec-bootstrap/references/spec-task-planning.md
+  s_35867bc40571eb::t_5c96ebbabf0446 1-61
+.agents/skills/trellis-spec-bootstrap/references/spec-writing.md
+  s_35867bc40571eb::t_356eab0aac9c1b 1-70
+.agents/skills/trellis-start/SKILL.md
+  s_35867bc40571eb::t_c74cc1b8e360fb 1-64
+.agents/skills/trellis-update-spec/SKILL.md
+  s_35867bc40571eb::t_0c6ede97125e79 1-356
+.claude/agents/trellis-check.md
+  s_35867bc40571eb::t_fb2ed7537a2a7e 1-115
+.claude/agents/trellis-implement.md
+  s_35867bc40571eb::t_bb8a8b737db354 1-110
+.claude/agents/trellis-research.md
+  s_35867bc40571eb::t_eefb57589c334f 1-137
+.claude/commands/trellis/continue.md
+  s_35867bc40571eb::t_cd0f0290357862 1-56
+.claude/commands/trellis/finish-work.md
+  s_35867bc40571eb::t_9d790795da48b8 1-66
+.claude/hooks/inject-subagent-context.py
+  s_35867bc40571eb::t_d3942af7d2d4c4 1-771
+.claude/hooks/inject-workflow-state.py
+  s_35867bc40571eb::t_7bf23830f5642f 1-408
+.claude/hooks/session-start.py
+  s_35867bc40571eb::t_6e8e38a77fe4ea 1-844
+.claude/settings.json
+  s_35867bc40571eb::t_7205e922560b0f 1-73
+.claude/skills/trellis-before-dev/SKILL.md
+  s_35867bc40571eb::t_04727c74f0a99e 1-40
+.claude/skills/trellis-brainstorm/SKILL.md
+  s_35867bc40571eb::t_c200d15ea6f29f 1-173
+.claude/skills/trellis-break-loop/SKILL.md
+  s_35867bc40571eb::t_ebf13dec39bb92 1-188
+.claude/skills/trellis-channel/SKILL.md
+  s_35867bc40571eb::t_2423ccf231ac72 1-67
+.claude/skills/trellis-channel/references/command-reference.md
+  s_35867bc40571eb::t_165a8395d67410 1-480
+.claude/skills/trellis-channel/references/forum.md
+  s_35867bc40571eb::t_a6bbbd252c665d 1-233
+.claude/skills/trellis-channel/references/progress-debugging.md
+  s_35867bc40571eb::t_c6d2297eb46146 1-226
+.claude/skills/trellis-channel/references/workers.md
+  s_35867bc40571eb::t_31963e4ce0e63a 1-276
+.claude/skills/trellis-channel/references/workflows.md
+  s_35867bc40571eb::t_326d30c3cff315 1-128
+.claude/skills/trellis-check/SKILL.md
+  s_35867bc40571eb::t_c2b97ca087da70 1-98
+.claude/skills/trellis-meta/SKILL.md
+  s_35867bc40571eb::t_21e315e5cc8d87 1-85
+.claude/skills/trellis-meta/references/customize-local/add-project-local-conventions.md
+  s_35867bc40571eb::t_d60093a7654cea 1-83
+.claude/skills/trellis-meta/references/customize-local/change-agents.md
+  s_35867bc40571eb::t_e5ddb80154d173 1-56
+.claude/skills/trellis-meta/references/customize-local/change-context-loading.md
+  s_35867bc40571eb::t_10338500200a20 1-84
+.claude/skills/trellis-meta/references/customize-local/change-hooks.md
+  s_35867bc40571eb::t_6e747470444cac 1-57
+.claude/skills/trellis-meta/references/customize-local/change-skills-or-commands.md
+  s_35867bc40571eb::t_f8dfcf01bdf35c 1-123
+.claude/skills/trellis-meta/references/customize-local/change-spec-structure.md
+  s_35867bc40571eb::t_fdeca81bedeb97 1-83
+.claude/skills/trellis-meta/references/customize-local/change-task-lifecycle.md
+  s_35867bc40571eb::t_1fb7cdf4d25ab8 1-90
+.claude/skills/trellis-meta/references/customize-local/change-workflow.md
+  s_35867bc40571eb::t_00217290048656 1-65
+.claude/skills/trellis-meta/references/customize-local/overview.md
+  s_35867bc40571eb::t_e2013cd541375a 1-55
+.claude/skills/trellis-meta/references/local-architecture/bundled-skills.md
+  s_35867bc40571eb::t_1da88073bcd623 1-147
+.claude/skills/trellis-meta/references/local-architecture/context-injection.md
+  s_35867bc40571eb::t_e42b27b2535227 1-68
+.claude/skills/trellis-meta/references/local-architecture/generated-files.md
+  s_35867bc40571eb::t_3d44fc68feb292 1-80
+.claude/skills/trellis-meta/references/local-architecture/multi-agent-channel.md
+  s_35867bc40571eb::t_6f03d930a65f6d 1-69
+.claude/skills/trellis-meta/references/local-architecture/overview.md
+  s_35867bc40571eb::t_b5a155f018111c 1-51
+.claude/skills/trellis-meta/references/local-architecture/spec-system.md
+  s_35867bc40571eb::t_69b3ed870e4155 1-102
+.claude/skills/trellis-meta/references/local-architecture/task-system.md
+  s_35867bc40571eb::t_2c49c6dc55f5dd 1-130
+.claude/skills/trellis-meta/references/local-architecture/workflow.md
+  s_35867bc40571eb::t_d708ef246c496f 1-75
+.claude/skills/trellis-meta/references/local-architecture/workspace-memory.md
+  s_35867bc40571eb::t_4a1c9075ebe5ef 1-71
+.claude/skills/trellis-meta/references/platform-files/agents.md
+  s_35867bc40571eb::t_3cbc35107a9e3c 1-82
+.claude/skills/trellis-meta/references/platform-files/hooks-and-settings.md
+  s_35867bc40571eb::t_ce8e34b26bf919 1-72
+.claude/skills/trellis-meta/references/platform-files/overview.md
+  s_35867bc40571eb::t_6d72e0f7f88442 1-59
+.claude/skills/trellis-meta/references/platform-files/platform-map.md
+  s_35867bc40571eb::t_91d20b2eb69ce5 1-105
+.claude/skills/trellis-meta/references/platform-files/skills-and-commands.md
+  s_35867bc40571eb::t_c3b627f12d90a9 1-85
+.claude/skills/trellis-session-insight/SKILL.md
+  s_35867bc40571eb::t_8d27138183e567 1-81
+.claude/skills/trellis-session-insight/references/cli-quick-reference.md
+  s_35867bc40571eb::t_5a38603cacc3a6 1-65
+.claude/skills/trellis-session-insight/references/triggering-patterns.md
+  s_35867bc40571eb::t_fbeea069c74f8d 1-93
+.claude/skills/trellis-spec-bootstrap/SKILL.md
+  s_35867bc40571eb::t_32e2411f45b1c8 1-41
+.claude/skills/trellis-spec-bootstrap/references/mcp-setup.md
+  s_35867bc40571eb::t_bf7e8b79035a59 1-90
+.claude/skills/trellis-spec-bootstrap/references/repository-analysis.md
+  s_35867bc40571eb::t_000db65cfc8dd7 1-59
+.claude/skills/trellis-spec-bootstrap/references/spec-task-planning.md
+  s_35867bc40571eb::t_ecfbddbd55ef6a 1-61
+.claude/skills/trellis-spec-bootstrap/references/spec-writing.md
+  s_35867bc40571eb::t_ccb69472d6af93 1-70
+.claude/skills/trellis-update-spec/SKILL.md
+  s_35867bc40571eb::t_368b4271f2ac80 1-356
+.codex/agents/trellis-check.toml
+  s_35867bc40571eb::t_ba63f04a54532e 1-84
+.codex/agents/trellis-implement.toml
+  s_35867bc40571eb::t_f73fceee059713 1-65
+.codex/agents/trellis-research.toml
+  s_35867bc40571eb::t_e899d4bf983e95 1-73
+.codex/config.toml
+  s_35867bc40571eb::t_dd24394c19b3b9 1-28
+.codex/hooks.json
+  s_35867bc40571eb::t_c935941180d541 1-15
+.codex/hooks/inject-workflow-state.py
+  s_35867bc40571eb::t_0660ebf005939d 1-408
+.codex/hooks/session-start.py
+  s_35867bc40571eb::t_193c6e16877e26 1-545
+.trellis/.gitignore
+  s_35867bc40571eb::t_1d58aa15e6f067 1-32
+.trellis/.template-hashes.json
+  s_35867bc40571eb::t_361c35de581286 1-146
+.trellis/.version
+  s_35867bc40571eb::t_2042b4197bc8fd 1
+.trellis/agents/check.md
+  s_35867bc40571eb::t_64eb1d17938fba 1-70
+.trellis/agents/implement.md
+  s_35867bc40571eb::t_0e5cdb2210d1db 1-71
+.trellis/config.yaml
+  s_35867bc40571eb::t_999aa000839971 1-117
+.trellis/scripts/__init__.py
+  s_35867bc40571eb::t_8107ccb20f60de 1-5
+.trellis/scripts/add_session.py
+  s_35867bc40571eb::t_8354199da2b1a6 1-615
+.trellis/scripts/common/__init__.py
+  s_35867bc40571eb::t_b6ff7101c321dc 1-92
+.trellis/scripts/common/active_task.py
+  s_35867bc40571eb::t_c166c3ac52d281 1-628
+.trellis/scripts/common/cli_adapter.py
+  s_35867bc40571eb::t_3b31e658bae0b1 1-886
+.trellis/scripts/common/config.py
+  s_35867bc40571eb::t_926decd6c2a567 1-474
+.trellis/scripts/common/developer.py
+  s_35867bc40571eb::t_ab1f6dac654e16 1-190
+.trellis/scripts/common/git.py
+  s_35867bc40571eb::t_8fbc208f6c162e 1-31
+.trellis/scripts/common/git_context.py
+  s_35867bc40571eb::t_d724cd6111077a 1-106
+.trellis/scripts/common/io.py
+  s_35867bc40571eb::t_dee495539de611 1-54
+.trellis/scripts/common/log.py
+  s_35867bc40571eb::t_fc1e668529ab78 1-45
+.trellis/scripts/common/packages_context.py
+  s_35867bc40571eb::t_0206118a8e4b48 1-238
+.trellis/scripts/common/paths.py
+  s_35867bc40571eb::t_5783e9ef26d9d8 1-447
+.trellis/scripts/common/safe_commit.py
+  s_35867bc40571eb::t_c838b6b8879d1f 1-315
+.trellis/scripts/common/session_context.py
+  s_35867bc40571eb::t_f2710863b22ce7 1-821
+.trellis/scripts/common/task_context.py
+  s_35867bc40571eb::t_264aba5fd1aa96 1-223
+.trellis/scripts/common/task_queue.py
+  s_35867bc40571eb::t_5c5b7866f89747 1-188
+.trellis/scripts/common/task_store.py
+  s_35867bc40571eb::t_3f380436c59bd3 1-818
+.trellis/scripts/common/task_utils.py
+  s_35867bc40571eb::t_66274e188bac69 1-296
+.trellis/scripts/common/tasks.py
+  s_35867bc40571eb::t_fd165470fe481c 1-112
+.trellis/scripts/common/trellis_config.py
+  s_35867bc40571eb::t_faa1d23a0932b6 1-131
+.trellis/scripts/common/types.py
+  s_35867bc40571eb::t_80f2dc9e260812 1-110
+.trellis/scripts/common/workflow_phase.py
+  s_35867bc40571eb::t_d38f2e4f74d018 1-212
+.trellis/scripts/get_context.py
+  s_35867bc40571eb::t_7831fc2071e4c6 1-16
+.trellis/scripts/get_developer.py
+  s_35867bc40571eb::t_ec67af3e77a410 1-26
+.trellis/scripts/hooks/linear_sync.py
+  s_35867bc40571eb::t_60bba569c19288 1-243
+.trellis/scripts/init_developer.py
+  s_35867bc40571eb::t_eb5da7c47b01ff 1-51
+.trellis/scripts/task.py
+  s_35867bc40571eb::t_eb4fb7e0d55324 1-506
+.trellis/spec/guides/code-reuse-thinking-guide.md
+  s_35867bc40571eb::t_d761287d7e7d8a 1-223
+.trellis/spec/guides/cross-layer-thinking-guide.md
+  s_35867bc40571eb::t_d4f89e9796464a 1-327
+.trellis/spec/guides/index.md
+  s_35867bc40571eb::t_0fe26df56d428c 1-97
+.trellis/spec/tests/gitflow-repo/backend/database-guidelines.md
+  s_35867bc40571eb::t_63beef7fa12860 1-51
+.trellis/spec/tests/gitflow-repo/backend/directory-structure.md
+  s_35867bc40571eb::t_12739213b13d97 1-54
+.trellis/spec/tests/gitflow-repo/backend/error-handling.md
+  s_35867bc40571eb::t_23a8db489e8cc1 1-51
+.trellis/spec/tests/gitflow-repo/backend/index.md
+  s_35867bc40571eb::t_5776081f02dc35 1-38
+.trellis/spec/tests/gitflow-repo/backend/logging-guidelines.md
+  s_35867bc40571eb::t_c5b1fbc4d7e34f 1-51
+.trellis/spec/tests/gitflow-repo/backend/quality-guidelines.md
+  s_35867bc40571eb::t_787dfcf1972bad 1-51
+.trellis/spec/tests/gitflow-repo/frontend/component-guidelines.md
+  s_35867bc40571eb::t_e1920998b44b13 1-59
+.trellis/spec/tests/gitflow-repo/frontend/directory-structure.md
+  s_35867bc40571eb::t_7a55e3441fc853 1-54
+.trellis/spec/tests/gitflow-repo/frontend/hook-guidelines.md
+  s_35867bc40571eb::t_eeb0b08da9f28c 1-51
+.trellis/spec/tests/gitflow-repo/frontend/index.md
+  s_35867bc40571eb::t_f51979bac1bfaa 1-39
+.trellis/spec/tests/gitflow-repo/frontend/quality-guidelines.md
+  s_35867bc40571eb::t_cfceaef4ba1953 1-51
+.trellis/spec/tests/gitflow-repo/frontend/state-management.md
+  s_35867bc40571eb::t_a38405c3b75120 1-51
+.trellis/spec/tests/gitflow-repo/frontend/type-safety.md
+  s_35867bc40571eb::t_4629a696a8c041 1-51
+.trellis/workflow.md
+  s_35867bc40571eb::t_63f15646769753 1-708
+.trellis/workspace/fangzc1/index.md
+  s_35867bc40571eb::t_6a1d4195dcf3c9 1-40
+.trellis/workspace/fangzc1/journal-1.md
+  s_35867bc40571eb::t_c7a46dce320acc 1-7
+.trellis/workspace/index.md
+  s_35867bc40571eb::t_15964cb7b0beca 1-125
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.6.16",
+  "base_commit_sha": "d25e834653e8aaf96fcc4b61e9e2fc951d2c1605",
+  "prompts": {},
+  "sessions": {
+    "s_2f122ce3b649e0": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f8e13-022c-7f12-823c-09a56c5a12b9",
+        "model": "unknown"
+      },
+      "human_author": "fangzc1 <fangzc1@lenovo.com>"
+    },
+    "s_35867bc40571eb": {
+      "agent_id": {
+        "tool": "codex",
+        "id": "019f8e0a-2524-7bc1-88cd-f33b20d2bb42",
+        "model": "unknown"
+      },
+      "human_author": "fangzc1 <fzc69@qq.com>"
+    }
+  }
+}
