@@ -1,0 +1,21 @@
+src/commands/git_ai_handlers.rs
+  s_3e91380a886f2d::t_6cc5c0bb3be3f6 1353-1380
+  s_3e91380a886f2d::t_15a0b98ab9bb63 1165-1181
+  s_3e91380a886f2d::t_1a23e64e69f0ce 1329
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.6.16",
+  "base_commit_sha": "d110193fedad2ee843fda8d39c296496fcc917ac",
+  "prompts": {},
+  "sessions": {
+    "s_3e91380a886f2d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eaa43d53-5cb2-4a8f-a267-7d8e69a8c049",
+        "model": "glm-5.2"
+      },
+      "human_author": "fangzc1 <fzc69@qq.com>"
+    }
+  }
+}
