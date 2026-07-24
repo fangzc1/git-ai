@@ -1,0 +1,39 @@
+src/mdm/agents/droid.rs
+  s_3e91380a886f2d::t_ae1e19589190e3 423
+  s_3e91380a886f2d::t_a44b7a1f0fb4b6 4
+src/mdm/agents/gemini.rs
+  s_3e91380a886f2d::t_609a4d76d083ef 4
+  s_3e91380a886f2d::t_8e26f5bf83d4c1 367
+src/mdm/profile_roots.rs
+  s_3e91380a886f2d::t_ea3233569ba45a 168-169
+  s_3e91380a886f2d::t_7c74c8092343ec 326-329,386-387
+  s_3e91380a886f2d::t_eea1d233b7d8a0 305-325,330-385,388-445
+  s_3e91380a886f2d::t_322c8caa51f980 36-53,60,69-70,72-86
+src/mdm/agents/claude_code.rs
+  s_3e91380a886f2d::t_944b376dd43dc6 370
+  s_3e91380a886f2d::t_bbc82f5dcf87ea 4
+src/mdm/agents/codex.rs
+  s_3e91380a886f2d::t_850dce30132e0b 1712-1752
+  s_3e91380a886f2d::t_077f7edb8d1aca 981
+  s_3e91380a886f2d::t_2529a167f890ca 4
+  s_3e91380a886f2d::t_2735e70fab321c 1710-1711
+src/mdm/agents/cursor.rs
+  s_3e91380a886f2d::t_6868867580fa82 6
+  s_3e91380a886f2d::t_e73462580bb62a 270
+---
+{
+  "schema_version": "authorship/3.0.0",
+  "git_ai_version": "development:1.6.16",
+  "base_commit_sha": "402ed32fd1fa39a6966c84790f7322dd7d3cfbe8",
+  "prompts": {},
+  "sessions": {
+    "s_3e91380a886f2d": {
+      "agent_id": {
+        "tool": "claude",
+        "id": "eaa43d53-5cb2-4a8f-a267-7d8e69a8c049",
+        "model": "glm-5.2"
+      },
+      "human_author": "fangzc1 <fzc69@qq.com>"
+    }
+  }
+}
